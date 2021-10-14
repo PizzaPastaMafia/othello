@@ -3,29 +3,51 @@ public class othello {
         int campo[][], mode, moveCounter = 0;
         campo = new int[11][11];
         mode = start();
+        ClearConsole();
         initCampo(campo);
-        stampaCampo(campo);
         while(true){
-            mode=1 ? routineM() : routineB();
+            ClearConsole();
+            stampaCampo(campo);
+            if(mode == 1){
+                routineM(campo, moveCounter);
+            } else {
+                routineB(campo, moveCounter);
+            }
             moveCounter++;
         }
     }
 
-    static void routineM(){
-        mossa();
-        checkVittoria();
+    static void routineM(int campo[][], int moveCounter){
+        mossa(campo, moveCounter);
+        //checkVittoria();
     }
 
-    static void routineB(){
-        mossa();
+    static void routineB(int campo[][], int moveCounter){
+        mossa(campo, moveCounter);
         mossaBot();
-        checkVittoria();
+        //checkVittoria();
     }
 
-    static void mossa(){
+    static void mossa(int campo[][], int moveCounter){
         //TODO: implement this 
         //check available cells to move
-        //input of user
+        
+        if(moveCounter % 2 == 0){
+            System.out.println("Giocatore 1 è il tuo turno");
+        } else {
+            System.out.println("Giocatore 2 è il tuo turno");
+        }
+
+        System.out.println("Riga:");
+        int y = Leggi.unInt();
+        System.out.println("Colonna");
+        int x = Leggi.unInt();
+        
+        if(moveCounter % 2 == 0){
+            campo[x][y] = 1;
+        } else {
+            campo[x][y] = 2;
+        }
     }
 
     static void mossaBot(){
@@ -36,13 +58,14 @@ public class othello {
 
     static int start(){
         System.out.println("1- single player\n 2- bot");
-        return Leggi.unInt;
+        return Leggi.unInt();
     }
     static void initCampo(int campo[][]){
         /*
+        0
+         = NUIE;
         1 = NERO;
         2 = BIANCO;
-        0 = NUIE;
         */
         for(int i=0; i<campo.length; i++){
             for(int j=0; j<campo.length; j++){
@@ -60,6 +83,25 @@ public class othello {
                 System.out.print(campo[i][j]+ " ");
             }
             System.out.println();
+        }
+    }
+
+    public static void ClearConsole(){
+        try{
+            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+              
+            if(operatingSystem.contains("Windows")){        
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            } 
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 }
