@@ -13,4 +13,3 @@ pizzare una pedina in un lato oppure trovare la pedina che se piazzata, mangerà
  
 
 Si può trovare il codice su https://github.com/PizzaPastaMafia/othello
- 

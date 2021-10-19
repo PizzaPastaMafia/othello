@@ -1,20 +1,21 @@
 public class othello {
     public static void main(String[] args) {
-        int campo[][], mode, moveCounter = 0;
-        campo = new int[11][11];
-        mode = start();
-        ClearConsole();
-        initCampo(campo);
-        while(true){
-            ClearConsole();
-            stampaCampo(campo);
+        int /*campo[][],*/ mode, moveCounter = 0;
+        //campo = new int[11][11];
+        //mode = start();
+        //ClearConsole();
+        //initCampo(campo);
+        new GUI();
+        /*while(true){
+            //ClearConsole();
+            //stampaCampo(campo);
             if(mode == 1){
                 routineM(campo, moveCounter);
             } else {
                 routineB(campo, moveCounter);
             }
             moveCounter++;
-        }
+        }*/
     }
 
     static void routineM(int campo[][], int moveCounter){
