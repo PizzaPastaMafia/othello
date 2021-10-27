@@ -1,18 +1,20 @@
 import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
 import java.awt.BorderLayout;
 
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+//import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-
 //import javafx.scene.layout.GridPane;
 
-public class GUI extends othello{
+public class GUI extends othello implements ActionListener{
     JFrame frame = new JFrame();
     othello mat = new othello();
     public GUI(){
@@ -35,21 +37,42 @@ public class GUI extends othello{
     }
 
     void gioco(int m[][]) {
-        for (int i = 0; i < campo.length; i++) {
-            for (int j = 0; i <campo.length; i++) {
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j <m.length; j++) {
                 if(m[i][j] == 1){
-                    buttons[m.length*i + j].setPic(P);
+                    buttons[m.length*i + j].setIcon(cella.P);
+                }
+                if(m[i][j] == 2){
+                    buttons[m.length*i + j].setIcon(cella.V);
                 }
             }
         }
 
     }
+
+    public void actionPerformed(ActionEvent e){
+        int turn = 2;
+        for (int i = 0; i < 64; i++){
+            int x = (int)(i / 8);
+            int y = i % 8;
+
+            if(e.getSource() == buttons[i]){
+                if(turn % 2 == 0){
+                    if(mat.campo[x][y] == 3 || mat.campo[x][y] == 5){
+                        buttons[i].setIcon(cella.P);
+                        mat.campo[x][y] = 1;
+                    }
+                } else {
+                    if(mat.campo[x][y] == 4 || mat.campo[x][y] == 5){
+                        buttons[i].setIcon(cella.V);
+                        mat.campo[x][y] = 2;                        
+                    }
+                }
+            }
+        }
+    }
     
     cella buttons[] = new cella[64];
-    ImageIcon P, V;
-    P = new ImageIcon(this.getClass().getResource("P.png"));
-    V = new ImageIcon(this.getClass().getResource("V.png"));
-
     void init(){
         JPanel campo = new JPanel();
         campo.setBackground(new Color(0, 0, 0));
@@ -58,6 +81,7 @@ public class GUI extends othello{
         campo.setLayout(new GridLayout(8, 8, 4, 4));
         for(int i = 0; i < 64; i++){    
             buttons[i] = new cella();
+            buttons[i].addActionListener(this);
             campo.add(buttons[i]);
         }
     

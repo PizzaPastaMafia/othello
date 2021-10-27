@@ -1,21 +1,16 @@
 public class othello {
-    public static int[][] campo = new int[11][11];
+    public static int[][] campo = new int[8][8];
     public static void main(String[] args) {
-        int /*campo[][],*/ mode, moveCounter = 0;
-        //campo = new int[11][11];
-        //mode = start();
-        //ClearConsole();
-        //initCampo(campo);        
+        int mode, moveCounter = 0;
        
-        for (int i = 0; i < campo.length; i++) {
-            for (int j = 0; i <campo.length; i++) {
-                campo[i][j] = 1;
-            }
-        }
+        initCampo(campo);
+        campo[0][0] = 3;
+        campo[0][1] = 3;
+
         new GUI();
+
+
         /*while(true){
-            //ClearConsole();
-            //stampaCampo(campo);
             if(mode == 1){
                 routineM(campo, moveCounter);
             } else {
@@ -70,10 +65,12 @@ public class othello {
     }
     static void initCampo(int campo[][]){
         /*
-        0
-         = NUIE;
+        0 = NUIE;
         1 = NERO;
         2 = BIANCO;
+        3 = MOSSA POSSIBILE NERO
+        4 = MOSSA POSSIBILE BIANCO
+        5 = MOSSA POSSIBILE NERO E BIANCO
         */
         for(int i=0; i<campo.length; i++){
             for(int j=0; j<campo.length; j++){
@@ -81,8 +78,8 @@ public class othello {
             }
         }
         
-        campo[4][4] = campo[5][5] = 1;
-        campo[4][5] = campo[5][4] = 2;
+        campo[3][3] = campo[4][4] = 1;
+        campo[3][4] = campo[4][3] = 2;
     }
 
     static void stampaCampo(int campo[][]){
