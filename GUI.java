@@ -9,11 +9,14 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
+
 //import javafx.scene.layout.GridPane;
 
 public class GUI extends othello{
     JFrame frame = new JFrame();
+    othello mat = new othello();
     public GUI(){
+        
         frame.setTitle("Othello");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 725);
@@ -24,13 +27,30 @@ public class GUI extends othello{
         
         //frame.getContentPane().setBackground(new Color(0, 204, 0));
         
-        gioco();
+        init();
+        gioco(mat.campo);
+        
         
         frame.setVisible(true);
     }
+
+    void gioco(int m[][]) {
+        for (int i = 0; i < campo.length; i++) {
+            for (int j = 0; i <campo.length; i++) {
+                if(m[i][j] == 1){
+                    buttons[m.length*i + j].setPic(P);
+                }
+            }
+        }
+
+    }
     
-    void gioco(){
-        cella buttons[] = new cella[64];
+    cella buttons[] = new cella[64];
+    ImageIcon P, V;
+    P = new ImageIcon(this.getClass().getResource("P.png"));
+    V = new ImageIcon(this.getClass().getResource("V.png"));
+
+    void init(){
         JPanel campo = new JPanel();
         campo.setBackground(new Color(0, 0, 0));
         campo.setPreferredSize(new Dimension(480, 480));
@@ -60,7 +80,7 @@ public class GUI extends othello{
         //JTextField Ptext = new JTextField();
         //Ptext.setText("lmao");
 
-        Pscore.add(Ptext);
+        //Pscore.add(Ptext);
 
 
         score.add(Pscore);

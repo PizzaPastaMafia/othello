@@ -13,11 +13,11 @@ public class cella extends JButton{
     */
     
     public cella(){
-        P = new ImageIcon(this.getClass().getResource("P.png"));
+        //P = new ImageIcon(this.getClass().getResource("P.png"));
         /*Image img = icon.getImage("P.png") ;  
         Image newimg = img.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH ) ; */ 
         //P = new ImageIcon( newimg );
-        V = new ImageIcon(this.getClass().getResource("V.png"));
+        //V = new ImageIcon(this.getClass().getResource("V.png"));
         //setIcon(P);
         //setPreferredSize(5, 5);
         //setMaximumSize(5, 5);

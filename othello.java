@@ -1,10 +1,17 @@
 public class othello {
+    public static int[][] campo = new int[11][11];
     public static void main(String[] args) {
         int /*campo[][],*/ mode, moveCounter = 0;
         //campo = new int[11][11];
         //mode = start();
         //ClearConsole();
-        //initCampo(campo);
+        //initCampo(campo);        
+       
+        for (int i = 0; i < campo.length; i++) {
+            for (int j = 0; i <campo.length; i++) {
+                campo[i][j] = 1;
+            }
+        }
         new GUI();
         /*while(true){
             //ClearConsole();
