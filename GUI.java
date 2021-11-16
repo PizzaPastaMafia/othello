@@ -1,23 +1,26 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 //import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-
-//import javafx.scene.layout.GridPane;
+import javax.swing.JPanel;
 
 public class GUI extends othello implements ActionListener{
     JFrame frame = new JFrame();
-    othello mat = new othello();
-    public GUI(){
+    public GUI() throws IOException{
         
         frame.setTitle("Othello");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,10 +33,10 @@ public class GUI extends othello implements ActionListener{
         //frame.getContentPane().setBackground(new Color(0, 204, 0));
         
         init();
-        gioco(mat.campo);
-        
+        gioco(othello.campo);
         
         frame.setVisible(true);
+        
     }
 
     void gioco(int m[][]) {
@@ -51,29 +54,32 @@ public class GUI extends othello implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-        int turn = 2;
         for (int i = 0; i < 64; i++){
             int x = (int)(i / 8);
             int y = i % 8;
 
             if(e.getSource() == buttons[i]){
-                if(turn % 2 == 0){
-                    if(mat.campo[x][y] == 3 || mat.campo[x][y] == 5){
+                othello.ClearConsole();
+                if(moveCounter % 2 == 0){
+                    if(othello.campoConMosse[x][y] == 3 || othello.campoConMosse[x][y] == 5){
                         buttons[i].setIcon(cella.P);
-                        mat.campo[x][y] = 1;
+                        othello.campo[x][y] = 1;
                     }
                 } else {
-                    if(mat.campo[x][y] == 4 || mat.campo[x][y] == 5){
+                    if(othello.campoConMosse[x][y] == 4 || othello.campoConMosse[x][y] == 5){
                         buttons[i].setIcon(cella.V);
-                        mat.campo[x][y] = 2;                        
+                        othello.campo[x][y] = 2;                        
                     }
                 }
+                othello.controlloMosse(othello.campoConMosse, othello.campo, othello.moveCounter);
+                stampaCampo(campoConMosse);
+                moveCounter++;
             }
         }
     }
     
     cella buttons[] = new cella[64];
-    void init(){
+    void init() throws IOException{
         JPanel campo = new JPanel();
         campo.setBackground(new Color(0, 0, 0));
         campo.setPreferredSize(new Dimension(480, 480));
@@ -88,33 +94,64 @@ public class GUI extends othello implements ActionListener{
         JPanel score = new JPanel();
         score.setPreferredSize(new Dimension(500, 225));
         score.setBackground(new Color(35, 35, 35));
+        score.setLayout(new GridLayout(1, 4, 4, 4));
+
+        //score.setHgap(150);
 
         JPanel Pscore = new JPanel();
         JPanel Vscore = new JPanel();
         JPanel PLscore = new JPanel();
         JPanel VLscore = new JPanel();
 
-        Pscore.setLayout(null);
+        Pscore.setLayout(new BorderLayout());
         Vscore.setLayout(null);
         PLscore.setLayout(null);
         VLscore.setLayout(null);
 
-        Pscore.setBounds(100, 70, 50, 50);
+        /*Pscore.setBounds(100, 70, 50, 50);
 
         //JTextField Ptext = new JTextField();
         //Ptext.setText("lmao");
 
         //Pscore.add(Ptext);
 
-
-        score.add(Pscore);
-        score.add(Vscore);
         score.add(PLscore);
-        score.add(VLscore);
+        score.add(VLscore);*/
         
 
         frame.add(campo, BorderLayout.SOUTH);
         frame.add(score, BorderLayout.NORTH);
+
+        /*Image Pimg = cella.P; // transform it 
+        Image newimg = cella.P.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        
+        Image Vimg = cella.V.getImage(); // transform it 
+        newimg = cella.V.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        Pscore.add(Pimg);
+        Vscore.add(Vimg);
+
+        score.add(Pscore);
+        score.add(Vscore);*/
+
+
+        /*BufferedImage Psmol = ImageIO.read(this.getClass().getResource("P.png"));
+        JLabel PscoreImg = new JLabel(new ImageIcon(Psmol));*/
+
+        /*JLabel PscoreImg = new JLabel();
+        PscoreImg.setIcon(new ImageIcon("P.png").getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH) );*/
+
+        //BufferedImage image=ImageIO.read(new File("P.png"));
+        //BufferedImage PscoreImg=resize(image,100,100);
+        //Pscore.add(PscoreImg);
+        //score.add(Pscore);
+        //score.add(Pscore);
+
+        
+        
+
+
         
     }
 }
