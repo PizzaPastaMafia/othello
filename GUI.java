@@ -52,9 +52,10 @@ public class GUI extends othello implements ActionListener{
         }
 
     }
-    
-    //public int moveCounter = 0;
+
     public void actionPerformed(ActionEvent e){
+        gioco(campo);
+
         
         for (int i = 0; i < 64; i++){
             int x = (int)(i / 8);
@@ -62,25 +63,42 @@ public class GUI extends othello implements ActionListener{
             
             if(e.getSource() == buttons[i]){
                 ClearConsole();
-                if(moveCounter % 2 == 0){
+
+                if(mode == 1){
+                    if(moveCounter % 2 == 0){
+                        if(campoConMosse[x][y] == 3){
+                            buttons[i].setIcon(cella.P);
+                            boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
+                            campo[x][y] = 1;
+                            moveCounter++;
+                        }
+                    } else {
+                        if(campoConMosse[x][y] == 4){
+                            buttons[i].setIcon(cella.V);
+                            boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
+                            campo[x][y] = 2;
+                            moveCounter++;
+                        }
+                    }
+                } else {
                     if(campoConMosse[x][y] == 3){
-                        buttons[i].setIcon(cella.P);
+                        buttons[i].setIcon(cella.V);
                         boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
                         campo[x][y] = 1;
                         moveCounter++;
-                    }
-                } else {
-                    if(campoConMosse[x][y] == 4){
-                        buttons[i].setIcon(cella.V);
-                        boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
-                        campo[x][y] = 2;
+                        routineBot(campo, campoConMosse, moveCounter);
                         moveCounter++;
                     }
+                    
                 }
-                controlloMosse(campoConMosse, campo, moveCounter);
-                stampaCampo(campoConMosse);
-                gioco(campo);
+
+
+
             }
+            controlloMosse(campoConMosse, campo, moveCounter);
+            stampaCampo(campoConMosse);
+            gioco(campo);
+            
         }
     }
     
