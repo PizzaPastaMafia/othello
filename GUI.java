@@ -33,7 +33,7 @@ public class GUI extends othello implements ActionListener{
         //frame.getContentPane().setBackground(new Color(0, 204, 0));
         
         init();
-        gioco(othello.campo);
+        gioco(campo);
         
         frame.setVisible(true);
         
@@ -52,28 +52,34 @@ public class GUI extends othello implements ActionListener{
         }
 
     }
-
+    
+    //public int moveCounter = 0;
     public void actionPerformed(ActionEvent e){
+        
         for (int i = 0; i < 64; i++){
             int x = (int)(i / 8);
             int y = i % 8;
-
+            
             if(e.getSource() == buttons[i]){
-                othello.ClearConsole();
+                ClearConsole();
                 if(moveCounter % 2 == 0){
-                    if(othello.campoConMosse[x][y] == 3 || othello.campoConMosse[x][y] == 5){
+                    if(campoConMosse[x][y] == 3){
                         buttons[i].setIcon(cella.P);
-                        othello.campo[x][y] = 1;
+                        boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
+                        campo[x][y] = 1;
+                        moveCounter++;
                     }
                 } else {
-                    if(othello.campoConMosse[x][y] == 4 || othello.campoConMosse[x][y] == 5){
+                    if(campoConMosse[x][y] == 4){
                         buttons[i].setIcon(cella.V);
-                        othello.campo[x][y] = 2;                        
+                        boolean inutile = ControlloMossa(campo, x, y, moveCounter, 1);
+                        campo[x][y] = 2;
+                        moveCounter++;
                     }
                 }
-                othello.controlloMosse(othello.campoConMosse, othello.campo, othello.moveCounter);
+                controlloMosse(campoConMosse, campo, moveCounter);
                 stampaCampo(campoConMosse);
-                moveCounter++;
+                gioco(campo);
             }
         }
     }

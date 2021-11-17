@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 public class othello {
     public static int[][] campo = new int[8][8];
     public static int[][] campoConMosse = new int[8][8];
-    public static int moveCounter;
+    public static int moveCounter = 0;
     public static void main(String[] args) throws IOException {
         int mode = start();
         
@@ -16,7 +16,7 @@ public class othello {
         
         controlloMosse(campoConMosse, campo, moveCounter);
 
-        
+        System.out.println("\n"+ moveCounter);
         
         new GUI();
 
@@ -90,7 +90,7 @@ public class othello {
             
             //char a = Leggi.unChar();
             
-            moveCounter++;
+            //moveCounter++;
         }
         
         ControlloVittoria(campo);
