@@ -6,7 +6,7 @@ public class othello {
     public static int[][] campo = new int[dimensioneCampo][dimensioneCampo];
     public static int[][] campoConMosse = new int[dimensioneCampo][dimensioneCampo];
     public static int moveCounter = 0;
-    public static int mode = start();
+    public static int mode;
     public static void main(String[] args) {
         
         
@@ -67,44 +67,6 @@ public class othello {
             {
                 controlloFine++;
             }
-            /*for(int i = 0; i < 8; i++)
-            {
-                for(int j = 0; j < 8; j++)
-                {
-                    int cnt = 0;
-                    
-                    if(!ControlloMossa(campo, i, j, 1))
-                    {
-                        cnt = cnt+2;
-                    }
-                    
-                    if(!ControlloMossa(campo, i, j, 2))
-                    {
-                        cnt++;
-                    }
-                    
-                    if(cnt == 1)
-                    {
-                        campo[i][j] = 3;
-                    }
-                    else if(cnt == 2)
-                    {
-                        campo[i][j] = 4;
-                    }
-                    else if(cnt == 3)
-                    {
-                        campo[i][j] = 5;
-                    }
-                    
-                }
-            }
-            
-            
-            */
-           
-            //checkVittoria();
-            
-            //char a = Leggi.unChar();
             
             moveCounter++;
         }
@@ -1044,10 +1006,11 @@ public class othello {
         return true;
     }
     
+    /*
     static int start(){
         System.out.println("1- single player\n2- bot");
         return Leggi.unInt();
-    }
+    }*/
     
     static void initCampo(int campo[][]){
         /*

@@ -16,7 +16,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 //import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JButton;
+
 
 public class GUI extends othello implements ActionListener{
     JFrame frame = new JFrame();
@@ -32,6 +38,7 @@ public class GUI extends othello implements ActionListener{
         
         //frame.getContentPane().setBackground(new Color(0, 204, 0));
         
+        //start();
         init();
         gioco(campo);
         
@@ -53,15 +60,50 @@ public class GUI extends othello implements ActionListener{
 
     }
 
-    public void actionPerformed(ActionEvent e){
-        gioco(campo);
+    public void warning(){
+        JFrame frame1 = new JFrame();
+        frame.setTitle("Meglio di no");
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setSize(100, 100);
+        frame1.setLayout(new BorderLayout());
 
+        JLabel label = new JLabel("Nightmare! è talmente difficile che neanche io sono ancora riusito a battere il bot, sei sicuro di volere questa difficolta");
+        frame1.add(label, BorderLayout.CENTER);
+        JButton si = new JButton("si cazzo");
+        JButton no = new JButton("no voglio la mamma");
+
+        frame1.add(si);
+        frame1.add(no);
+        
+        frame1.setVisible(true);
+
+
+    }
+
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == hard){
+            warning();
+        }
+
+        /*if(e.getSource() == single){
+            mode = 1;
+        } else if(e.getSource() == bot){
+            mode = 2;
+        }  else if(e.getSource() == multi){
+            mode = 3;
+        }
+
+        if(e.getSource() == single || e.getSource() == bot || e.getSource() == multi){
+            frame.remove(mainStart);
+        }*/
+        
         
         for (int i = 0; i < 64; i++){
             int x = (int)(i / 8);
             int y = i % 8;
             
             if(e.getSource() == buttons[i]){
+                gioco(campo);
                 ClearConsole();
 
                 if(mode == 1){
@@ -98,12 +140,86 @@ public class GUI extends othello implements ActionListener{
             controlloMosse(campoConMosse, campo, moveCounter);
             stampaCampo(campoConMosse);
             gioco(campo);
+            ControlloVittoria(campo);
+
             
         }
     }
+
+    JButton single = new JButton();
+    JButton bot = new JButton(); 
+    JButton multi = new JButton();
+    JPanel mainStart = new JPanel();
+
+    void start(){
+        mainStart.setBackground(new Color(0, 188, 140));
+        mainStart.setLayout(new GridLayout(3, 1, 50, 50));
+        JPanel sPanel = new JPanel();
+        JPanel bPanel = new JPanel();
+        JPanel mPanel = new JPanel();
+
+        sPanel.setLayout(new GridLayout(1, 2, 3, 3));
+        bPanel.setLayout(new GridLayout(1, 2, 3, 3));
+        mPanel.setLayout(new GridLayout(1, 2, 3, 3));
+
+        single.setText("->");
+        bot.setText("->");
+        multi.setText("->");
+
+        single.addActionListener(this);
+        bot.addActionListener(this);
+        multi.addActionListener(this);
+
+        StartLabel sLabel = new StartLabel();
+        StartLabel bLabel = new StartLabel();
+        StartLabel mLabel = new StartLabel();
+
+        sLabel.setText("Gioca contro un avversario in locale");
+        bLabel.setText("Gioca contro un bot");
+        mLabel.setText("Gioca contro un avversario sulla stessa LAN");
+
+        sPanel.add(sLabel, BorderLayout.WEST);
+        sPanel.add(single, BorderLayout.EAST);
+        bPanel.add(bLabel, BorderLayout.WEST);
+        bPanel.add(bot, BorderLayout.EAST);
+        mPanel.add(mLabel, BorderLayout.WEST);
+        mPanel.add(multi, BorderLayout.EAST);
+        
+
+        mainStart.add(sPanel);
+        mainStart.add(bPanel);
+        mainStart.add(mPanel);
+        frame.add(mainStart);
+    }
     
     cella buttons[] = new cella[64];
+    JRadioButtonMenuItem beginner = new JRadioButtonMenuItem("I'm too young to die", true);
+    JRadioButtonMenuItem easy = new JRadioButtonMenuItem("Hurt me plenty", false);
+    JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Ultra-violence", false);
+    JRadioButtonMenuItem hard = new JRadioButtonMenuItem("Nightmare!", false);
+    
     void init() throws IOException{
+
+        JMenuBar menubar = new JMenuBar();
+        frame.setJMenuBar(menubar);
+
+        JMenu partita = new JMenu("partita");
+        menubar.add(partita);
+
+        JMenuItem nuovaPartita = new JMenuItem("nuova partita");
+        partita.add(nuovaPartita);
+
+        JMenu bot = new JMenu("difficoltà bot");
+        partita.add(bot);
+
+
+        bot.add(beginner);
+        bot.add(easy);
+        bot.add(medium);
+        bot.add(hard);
+
+
+
         JPanel campo = new JPanel();
         campo.setBackground(new Color(0, 0, 0));
         campo.setPreferredSize(new Dimension(480, 480));
