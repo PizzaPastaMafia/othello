@@ -31,7 +31,7 @@ public class othello {
         
         int controlloFine = 0;
         
-        while(controlloFine < 2){
+        /*while(controlloFine < 2){
             ClearConsole();
             
             int n = controlloMosse(campoConMosse, campo, moveCounter);
@@ -42,7 +42,7 @@ public class othello {
             {
                 controlloFine = 0;
                 
-                stampaCampo(campoConMosse);
+                //stampaCampo(campoConMosse);
                 
                 if(mode == 1){
                     routineUtente(campo, campoConMosse, moveCounter);
@@ -71,12 +71,12 @@ public class othello {
             moveCounter++;
         }
         
-        ControlloVittoria(campo);
+        ControlloVittoria(campo);*/
     }
     
     static void ControlloVittoria(int campoConMosse[][]){
-        int uno = 0, due = 0;
-        
+        int uno = 0, due = 0, altro = 0;
+
         for(int i = 0; i < dimensioneCampo; i++)
         {
             for(int j = 0; j < dimensioneCampo; j++)
@@ -88,21 +88,26 @@ public class othello {
                 else if(campo[i][j] == 2)
                 {
                     due++;
+                } else {
+                    altro++;
                 }
             }
         }
         
-        if(uno > due)
-        {
-            System.out.println("Giocatore 1 ha vinto: "+ uno + " a " + due);
-        }
-        else if(due > uno)
-        {
-            System.out.println("Giocatore 2 ha vinto: "+ due + " a " + uno);
-        }
-        else
-        {
-            System.out.println("Pareggio: "+ uno + " a " + due);
+        if(uno + due == 64 || altro == 0){
+            if(uno > due)
+            {
+                System.out.println("Giocatore 1 ha vinto: "+ uno + " a " + due);
+            }
+            else if(due > uno)
+            {
+                System.out.println("Giocatore 2 ha vinto: "+ due + " a " + uno);
+            }
+            else
+            {
+                System.out.println("Pareggio: "+ uno + " a " + due);
+            }
+
         }
         
     }
