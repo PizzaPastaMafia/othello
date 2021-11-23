@@ -339,65 +339,6 @@ public class othello {
         return somma2-somma;
     }
     
-    static int controllaBordoInterno(int campoConMosse[][], int mosse[][], int campo[][], int i, int moveCounter){
-        //da sistemare
-        
-        int[][] campoProva = new int [dimensioneCampo][dimensioneCampo];
-        
-        int somma = 0, avver, bot;
-        
-        if(moveCounter % 2 == 0){
-            avver = 2;
-            bot = 1;
-        } else {
-            avver = 1;
-            bot = 2;
-        }
-        
-        copiaCampo(campo, campoProva);
-        
-        boolean inutile = controlloMossa(campoProva, mosse[i][0], mosse[i][1], moveCounter, 1);
-        
-        campoProva[mosse[i][0]][mosse[i][1]] = bot;
-        
-        controlloMosse(campoProva, campo, moveCounter+1);
-        
-        avver += 2;
-        
-        for(int y = 0; y < dimensioneCampo; y++)
-        {
-            for(int j = 0; j < dimensioneCampo; j++)
-            {
-                System.out.print(campoProva[y][j]);
-                
-                if(y == 0 || y == dimensioneCampo-1 || j == 0 || j == dimensioneCampo-1)
-                {
-                    if(campoProva[y][j] == avver)
-                    {
-                        somma++;
-                    }
-                    
-                    if(campoConMosse[y][j] == avver)
-                    {
-                        somma--;
-                    }
-                }
-            }
-            System.out.println();
-        }
-        
-        if(somma > 0)
-        {
-            return -1;
-        }
-        
-        System.out.println("ci sono "+ mosse[i][0]+ " "+ mosse[i][1]);
-        
-        char b = Leggi.unChar();
-        
-        return 0;
-    }
-    
     static void copiaCampo(int campo[][], int campoDaCopiare[][])
     {
         for(int y = 0; y < dimensioneCampo; y++)
@@ -494,41 +435,6 @@ public class othello {
                     mosse[i][j] = 0;
                 }
             }
-        }
-    }
-    
-    static void routineUtente(int campo[][], int campoConMosse[][], int moveCounter){
-        mossa(campo, campoConMosse, moveCounter);
-    }
-
-    static void mossa(int campo[][], int campoConMosse[][], int moveCounter)
-    {
-        if(moveCounter % 2 == 0){
-            System.out.println("Giocatore 1 è il tuo turno");
-        } else {
-            System.out.println("Giocatore 2 è il tuo turno");
-        }
-        
-        int x, y;
-        
-        boolean mossa = true;
-        
-        do
-        {
-            System.out.println("Riga:");
-            x = Leggi.unInt();
-            System.out.println("Colonna");
-            y = Leggi.unInt();
-            
-            mossa = controlloMossa(campo, x, y, moveCounter, 1);
-            
-        }
-        while(mossa);
-        
-        if(moveCounter % 2 == 0){
-            campo[x][y] = 1;
-        } else {
-            campo[x][y] = 2;
         }
     }
     

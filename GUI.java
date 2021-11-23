@@ -264,7 +264,6 @@ public class GUI extends othello implements ActionListener{
             try {
                 socketInit(ip, username);
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
 
