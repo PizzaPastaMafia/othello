@@ -6,6 +6,7 @@ public class othello {
     public static int[][] campoConMosse = new int[dimensioneCampo][dimensioneCampo];
     public static int moveCounter = 0;
     public static int mode;
+    public static int difficolta = 4;
     public static void main(String[] args) {
         initCampo(campo);
         controlloMosse(campoConMosse, campo, moveCounter);
@@ -43,7 +44,17 @@ public class othello {
         return vscore;
     }
     
-    static void controlloVittoria(int campoConMosse[][]){
+    static int controlloVittoria(int campoConMosse[][]){
+        if(controlloMosse(campoConMosse, campo, moveCounter) == 0)
+        {
+            moveCounter = (moveCounter+1)%2;
+        }
+
+        if(controlloMosse(campoConMosse, campo, moveCounter) != 0)
+        {
+            return -1;
+        }
+
         int uno = 0, due = 0, altro = 0;
 
         for(int i = 0; i < dimensioneCampo; i++)
@@ -66,18 +77,19 @@ public class othello {
         if(uno + due == 64 || altro == 0){
             if(uno > due)
             {
-                System.out.println("Giocatore 1 ha vinto: "+ uno + " a " + due);
+                return 1;
             }
             else if(due > uno)
             {
-                System.out.println("Giocatore 2 ha vinto: "+ due + " a " + uno);
+                return 2;
             }
             else
             {
-                System.out.println("Pareggio: "+ uno + " a " + due);
+                return 0;
             }
-
+            
         }
+        return -1;
         
     }
     
@@ -191,53 +203,140 @@ public class othello {
             
             int somma = 0;
             
-            boolean inutile = controlloMossa(campoProva, mosse[i][0], mosse[i][1], moveCounter, 1);
-            
-            if(campoProva[1][1] == avver && campo[1][1] != avver)
+            if(difficolta > 1)
             {
-                somma++;
-            }
-            
-            if(campoProva[1][6] == avver && campo[1][6] != avver)
-            {
-                somma++;
-            }
-            
-            if(campoProva[6][1] == avver && campo[6][1] != avver)
-            {
-                somma++;
-            }
-            
-            if(campoProva[6][6] == avver && campo[6][6] != avver)
-            {
-                somma++;
-            }
-            
-            if(somma > 0)
-            {
-                mosse[i][2] = -3;
-            }
-            else if(mosse[i][0] == 0 && mosse[i][1] == 0 || mosse[i][0] == 0 && mosse[i][1] == dimensioneCampo-1 || mosse[i][0] == dimensioneCampo-1 && mosse[i][1] == 0 || mosse[i][0] == dimensioneCampo-1 && mosse[i][1] == dimensioneCampo-1)
-            {
-                mosse[i][2] = 3;
-            }
-            else if(mosse[i][0] == 1 && mosse[i][1] == 1 || mosse[i][0] == 1 && mosse[i][1] == dimensioneCampo-2 || mosse[i][0] == dimensioneCampo-2 && mosse[i][1] == 1 || mosse[i][0] == dimensioneCampo-2 && mosse[i][1] == dimensioneCampo-2)
-            {
-                mosse[i][2] = -3;
-            }
-            else if(mosse[i][0] > 1 && mosse[i][1] > 1 && mosse[i][0] < dimensioneCampo-2 && mosse[i][1] < dimensioneCampo-2)
-            {
-                mosse[i][2] = 0;
-            }
-            else if(mosse[i][0] == 0 || mosse[i][0] == dimensioneCampo-1 || mosse[i][1] == 0 || mosse[i][1] == dimensioneCampo-1)
-            {
-                mosse[i][2] = 1 + controllaBordi(campoConMosse, mosse, campo, i, moveCounter);
+                boolean inutile = controlloMossa(campoProva, mosse[i][0], mosse[i][1], moveCounter, 1);
+                
+                if(campoProva[1][1] == avver && campo[1][1] != avver)
+                {
+                    somma++;
+                }
+                
+                if(campoProva[1][6] == avver && campo[1][6] != avver)
+                {
+                    somma++;
+                }
+                
+                if(campoProva[6][1] == avver && campo[6][1] != avver)
+                {
+                    somma++;
+                }
+                
+                if(campoProva[6][6] == avver && campo[6][6] != avver)
+                {
+                    somma++;
+                }
+                
+                if(somma > 0 && difficolta > 3)
+                {
+                    mosse[i][2] = -3;
+                }
+                else if(mosse[i][0] == 0 && mosse[i][1] == 0 || mosse[i][0] == 0 && mosse[i][1] == dimensioneCampo-1 || mosse[i][0] == dimensioneCampo-1 && mosse[i][1] == 0 || mosse[i][0] == dimensioneCampo-1 && mosse[i][1] == dimensioneCampo-1)
+                {
+                    if(difficolta == 2)
+                    {
+                        mosse[i][2] = 1;
+                    }
+                    else
+                    {
+                        mosse[i][2] = 3;
+                    }
+                }
+                else if(mosse[i][0] == 1 && mosse[i][1] == 1 || mosse[i][0] == 1 && mosse[i][1] == dimensioneCampo-2 || mosse[i][0] == dimensioneCampo-2 && mosse[i][1] == 1 || mosse[i][0] == dimensioneCampo-2 && mosse[i][1] == dimensioneCampo-2)
+                {
+                    if(difficolta > 2)
+                    {
+                        mosse[i][2] = -2;
+                        
+                        if(difficolta == 3)
+                        {
+                            mosse[i][2]++;
+                        }
+                    }
+                    else
+                    {
+                        mosse[i][2] = 0;
+                    }
+                }
+                else if(mosse[i][0] > 1 && mosse[i][1] > 1 && mosse[i][0] < dimensioneCampo-2 && mosse[i][1] < dimensioneCampo-2)
+                {
+                    mosse[i][2] = 0;
+                }
+                else if(mosse[i][0] == 0 || mosse[i][0] == dimensioneCampo-1 || mosse[i][1] == 0 || mosse[i][1] == dimensioneCampo-1)
+                {
+                    mosse[i][2] = 1;
+                    
+                    if(difficolta > 3)
+                    {
+                        mosse[i][2] += controllaBordi(campoConMosse, mosse, campo, i, moveCounter);
+                    }
+                }
+                else
+                {
+                    if(difficolta > 2)
+                    {
+                        mosse[i][2] = -1;
+                    }
+                    else
+                    {
+                        mosse[i][2] = 0;
+                    }
+                }
             }
             else
             {
-                mosse[i][2] = -1;
+                if(difficolta == 0)
+                {
+                    mosse[i][2] = 0;
+                }
+                else
+                {
+                    mosse[i][2] = contaGirate(mosse, campo, i, moveCounter);
+                }
             }
         }
+    }
+    
+    static int contaGirate(int mosse[][], int campo[][], int i, int moveCounter){
+        int[][] campoProva = new int [dimensioneCampo][dimensioneCampo];
+        
+        copiaCampo(campo, campoProva);
+        
+        int avver, giocat, somma = 0, somma2 = 0;
+        
+        if(moveCounter % 2 == 0){
+            avver = 2;
+            giocat = 1;
+        } else {
+            avver = 1;
+            giocat = 2;
+        }
+        
+        for(int y = 0; y < dimensioneCampo; y++)
+        {
+            for(int j = 0; j < dimensioneCampo; j++)
+            {
+                if(campoProva[y][j] == giocat)
+                {
+                    somma++;
+                }
+            }
+        }
+        
+        boolean inutile = controlloMossa(campoProva, mosse[i][0], mosse[i][1], moveCounter, 1);
+        
+        for(int y = 0; y < dimensioneCampo; y++)
+        {
+            for(int j = 0; j < dimensioneCampo; j++)
+            {
+                if(campoProva[y][j] == giocat)
+                {
+                    somma2++;
+                }
+            }
+        }
+        
+        return somma2-somma;
     }
     
     static int controllaBordoInterno(int campoConMosse[][], int mosse[][], int campo[][], int i, int moveCounter){

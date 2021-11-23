@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -14,9 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
@@ -29,6 +34,7 @@ public class GUI extends othello implements ActionListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 725);
         frame.setLayout(new BorderLayout());
+        frame.setResizable(false);
         
         ImageIcon logo = new ImageIcon("logo.png");
         frame.setIconImage(logo.getImage());
@@ -39,10 +45,12 @@ public class GUI extends othello implements ActionListener{
         
     }
 
-    JLabel VLscore = new JLabel();
-    JLabel PLscore = new JLabel();
+    JLabel VLscore = new JLabel("", SwingConstants.CENTER);
+    JLabel PLscore = new JLabel("", SwingConstants.CENTER);
 
     void paintButtons(int m[][]) {
+        VLscore.setFont(new Font("Arial", Font.PLAIN, 30));
+        PLscore.setFont(new Font("Arial", Font.PLAIN, 30));
         VLscore.setText("BIANCHI: " + getVscore());
         PLscore.setText("NERI: " + getPscore());
 
@@ -55,13 +63,17 @@ public class GUI extends othello implements ActionListener{
             for (int j = 0; j <m.length; j++) {
                 if(m[j][i] == 0) {
                     buttons[m.length*i + j].setIcon(new ImageIcon("empty.png"));
-                }
+                } 
                 if(m[i][j] == 1){
                     buttons[m.length*i + j].setIcon(cella.P);
                 }
                 if(m[i][j] == 2){
                     buttons[m.length*i + j].setIcon(cella.V);
-                }
+                } 
+                if(m[i][j] == 3 || m[i][j] == 4) {
+                    buttons[m.length*i + j].setIcon(new ImageIcon("empty.png"));
+                    buttons[m.length*i + j].setLabel(); 
+                } 
             }
         }
 
@@ -92,6 +104,10 @@ public class GUI extends othello implements ActionListener{
     JButton connetti = new JButton("connetti");
     JButton annulla = new JButton("annulla");
     JFrame frame2 = new JFrame();
+    JTextField textField = new JTextField(20);
+    static String ip = "";
+    JTextField textField1 = new JTextField(20);
+    static String username = "";
     public void connetti(){
         frame2.setTitle("Connettiti a un server");
         
@@ -101,10 +117,8 @@ public class GUI extends othello implements ActionListener{
         JPanel buttons = new JPanel(new GridLayout(1, 2, 2, 2));
 
         JPanel main = new JPanel(new GridLayout(4, 1, 2, 2));
-        JLabel label = new JLabel("Indirizzo IP del server");
-        JTextField textField = new JTextField(20);
+        JLabel label = new JLabel("Indirizzo IP del server"); //ad esempio guarda
         JLabel label1 = new JLabel("Nome");
-        JTextField textField1 = new JTextField(20);
 
 
         main.setBorder(new EmptyBorder(20, 10, 40, 10));
@@ -121,10 +135,9 @@ public class GUI extends othello implements ActionListener{
         annulla.addActionListener(this);
         frame2.add(buttons, BorderLayout.SOUTH);
         frame2.setVisible(true);
-
-
     }
 
+    
     JButton ok = new JButton("ok");
     JFrame frame3 = new JFrame();
     public void about(){
@@ -135,31 +148,88 @@ public class GUI extends othello implements ActionListener{
         frame3.setLayout(new BorderLayout());
         JPanel buttons = new JPanel(new GridLayout(1, 2, 2, 2));
         JPanel main = new JPanel(new GridLayout(1,1,1,1));
-
+        
         JLabel label = new JLabel("<html><b>Othello</b><br><br>Di Lorenzo Del Forno, Andrea Mauro e Matteo Tramontina<br>Versione: build 22<br>OS:</html>" + System.getProperty("os.name"));
         
         main.setBorder(new EmptyBorder(10,10,10,10));
-
+        
         main.add(label);
         frame3.add(main, BorderLayout.CENTER);
-
+        
         buttons.add(ok);
         ok.addActionListener(this);
         frame3.add(buttons, BorderLayout.SOUTH);
         frame3.setVisible(true);
     }
+    
+    JButton rigioca = new JButton("rigioca");
+    JButton vonde = new JButton("vonde");
+    JFrame frame4 = new JFrame();
+    public void fine(int x){
+        frame1.setTitle("Partita finita");
+        
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setSize(400, 200);
+        frame1.setLayout(new BorderLayout());
+        JPanel buttons = new JPanel(new GridLayout(1, 2, 2, 2));
+        
+        JLabel label1 = new JLabel("Giocatore 1 ha vinto: "+ getPscore() + " a " + getVscore());
+        JLabel label2 = new JLabel("Giocatore 2 ha vinto: "+ getVscore() + " a " + getPscore());
+        JLabel label0 = new JLabel("Pareggio: " + getPscore() + " a " + getVscore());
+        
+        if(x == 1){
+            frame1.add(label1, BorderLayout.CENTER);
+        } else if(x == 2){
+            frame1.add(label2, BorderLayout.CENTER);
+        } else {
+            frame1.add(label0, BorderLayout.CENTER);
+        }
+        
+        buttons.add(rigioca);
+        buttons.add(vonde);
+        si.addActionListener(this);
+        no.addActionListener(this);
+        frame1.add(buttons, BorderLayout.SOUTH);
+        frame1.setVisible(true);
+    }
 
+    JFrame frame5 = new JFrame();
+    public void attendi(){
+        frame5.setTitle("spe");
+        
+        frame5.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame5.setSize(400, 200);
+        frame5.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("<html>Attendi che l'altro giocatore che si connetta</html>");
+        frame5.add(label, BorderLayout.CENTER);
+        frame5.setVisible(true);
+    }
+    
     public void reset(){
         moveCounter = 0;
         initCampo(campo);
+        copiaCampo(campo, campoConMosse);
         controlloMosse(campoConMosse, campo, moveCounter);
-        paintButtons(campo);
+        paintButtons(campoConMosse);
     }
 
     boolean started = false;
     public void actionPerformed(ActionEvent e){
+        if(e.getSource() == beginner){
+            difficolta = 0;
+        }
+        if(e.getSource() == easy){
+            difficolta = 1;
+        }
+        if(e.getSource() == medium){
+            difficolta = 2;
+        }
         if(e.getSource() == hard){
-            
+            difficolta = 3;
+        }
+        if(e.getSource() == veryHard){
+            difficolta = 4;
             warning();
         }
 
@@ -188,6 +258,23 @@ public class GUI extends othello implements ActionListener{
             frame2.dispose();
         } else if (e.getSource() == connetti){
             
+            ip = textField.getText();
+            username = textField1.getText();
+            
+            try {
+                socketInit(ip, username);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            if(client.isConnected()){
+                frame2.dispose();
+                attendi();
+            } else {
+                JOptionPane.showMessageDialog(null, "Errore di connessione");
+            }
+            
         }
 
         if(e.getSource() == about){
@@ -205,7 +292,7 @@ public class GUI extends othello implements ActionListener{
                 int y = i % 8;
                 
                 if(e.getSource() == buttons[i]){
-                    paintButtons(campo);
+                    paintButtons(campoConMosse);
                     ClearConsole();
 
                     if(mode == 1){
@@ -242,22 +329,34 @@ public class GUI extends othello implements ActionListener{
                 }
                 controlloMosse(campoConMosse, campo, moveCounter);
                 //stampaCampo(campoConMosse);
-                paintButtons(campo);
-                controlloVittoria(campoConMosse);
+                paintButtons(campoConMosse);
+                if(controlloVittoria(campoConMosse) >= 0){
+                    fine(controlloVittoria(campoConMosse));
+                }
                 
                 
             }
         }
+    }
+
+    Client client;
+    void socketInit(String ip, String username) throws UnknownHostException, IOException{
+        Socket socket = new Socket(ip, 420);
+        Client clnt = new Client(socket, username);
+        client = clnt;    
     }
     
     JPanel score = new JPanel();
     cella buttons[] = new cella[64];
     JPanel Pscore = new JPanel();
     JPanel Vscore = new JPanel();
-    JRadioButtonMenuItem beginner = new JRadioButtonMenuItem("I'm too young to die", true);
-    JRadioButtonMenuItem easy = new JRadioButtonMenuItem("Hurt me plenty", false);
-    JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Ultra-violence", false);
-    JRadioButtonMenuItem hard = new JRadioButtonMenuItem("Nightmare!", false);
+
+    JRadioButtonMenuItem beginner = new JRadioButtonMenuItem("I'm too young to die", false);
+    JRadioButtonMenuItem easy = new JRadioButtonMenuItem("Hey, not too rough!", true);
+    JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Hurt me plenty", false);
+    JRadioButtonMenuItem hard = new JRadioButtonMenuItem("Ultra-violence", false);
+    JRadioButtonMenuItem veryHard = new JRadioButtonMenuItem("Nightmare!", false);
+
     JMenuItem pvp = new JMenuItem("contro giocatore locale");
     JMenuItem Pbot = new JMenuItem("contro bot");
     JMenuItem multi = new JMenuItem("contro giocatore sulla stessa LAN...");
@@ -295,17 +394,21 @@ public class GUI extends othello implements ActionListener{
         bot.add(easy);
         bot.add(medium);
         bot.add(hard);
+        bot.add(veryHard);
+
         
         beginner.addActionListener(this);
         easy.addActionListener(this);
         medium.addActionListener(this);
         hard.addActionListener(this);
+        veryHard.addActionListener(this);
         
         ButtonGroup dif = new ButtonGroup();
         dif.add(beginner);
         dif.add(easy);
         dif.add(medium);
         dif.add(hard);
+        dif.add(veryHard);
 
         
         JPanel campo = new JPanel();
@@ -319,7 +422,7 @@ public class GUI extends othello implements ActionListener{
             campo.add(buttons[i]);
         }
         
-        score.setPreferredSize(new Dimension(500, 225));
+        score.setPreferredSize(new Dimension(500, 185));
         score.setBackground(new Color(35, 35, 35));
         score.setLayout(new GridLayout(1, 2, 10, 10));        
         
