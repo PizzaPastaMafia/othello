@@ -61,7 +61,7 @@ public class GUI extends othello implements ActionListener{
 
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j <m.length; j++) {
-                if(m[j][i] == 0) {
+                if(m[j][i] != 1 || m[j][j] != 2) {
                     buttons[m.length*i + j].setIcon(new ImageIcon("empty.png"));
                 } 
                 if(m[i][j] == 1){
@@ -69,11 +69,7 @@ public class GUI extends othello implements ActionListener{
                 }
                 if(m[i][j] == 2){
                     buttons[m.length*i + j].setIcon(cella.V);
-                } 
-                if(m[i][j] == 3 || m[i][j] == 4) {
-                    buttons[m.length*i + j].setIcon(new ImageIcon("empty.png"));
-                    buttons[m.length*i + j].setLabel(); 
-                } 
+                }
             }
         }
 
@@ -149,7 +145,7 @@ public class GUI extends othello implements ActionListener{
         JPanel buttons = new JPanel(new GridLayout(1, 2, 2, 2));
         JPanel main = new JPanel(new GridLayout(1,1,1,1));
         
-        JLabel label = new JLabel("<html><b>Othello</b><br><br>Di Lorenzo Del Forno, Andrea Mauro e Matteo Tramontina<br>Versione: build 22<br>OS:</html>" + System.getProperty("os.name"));
+        JLabel label = new JLabel("<html><b>Othello</b><br><br>Di Lorenzo Del Forno, Andrea Mauro e Matteo Tramontina<br>Versione: build 22<br>OS:" + System.getProperty("os.name") + "</html>");
         
         main.setBorder(new EmptyBorder(10,10,10,10));
         
